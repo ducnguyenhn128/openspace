@@ -11,8 +11,8 @@ import PopularTags from "./popularTags";
 
 const NewsFeed = () => {
     const [newsFeedGlobal, setNewsFeedGlobal] = useState(true)
-    const URL = newsFeedGlobal ? 'http://localhost:8000/post/feed-global' : 'http://localhost:8000/post/feed-follow'
-    const URL1 = 'http://localhost:8000/post/feed-follow'
+    const URL = newsFeedGlobal ? 'https://openspacebe.vercel.app/post/feed-global' : 'https://openspacebe.vercel.app/post/feed-follow'
+    // const URL1 = 'http://localhost:8000/post/feed-follow'
     const navigate = useNavigate()
     const [allPosts, setAllPosts] = useState([]) ;
 

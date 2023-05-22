@@ -45,7 +45,7 @@ const Profile = () => {
     const [totalFollowings, setTotalFollowings] = useState(0);
     const [totalFollowers, setTotalFollowers] = useState(0);
 
-    const URL = 'http://localhost:8000/api/profile';
+    const URL = 'https://openspacebe.vercel.app/api/profile';
 
 
     let fullName = "";

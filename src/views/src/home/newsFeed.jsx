@@ -15,7 +15,7 @@ const Homepage = () => {
     useEffect(() => {
         const checkLoginStatus = async () => { 
             try {
-                const response = await axios.get('http://localhost:8000/api/check-login', {
+                const response = await axios.get('https://openspacebe.vercel.app/api/check-login', {
                     withCredentials: true // with cookie
                 });
                 console.log(response.data)

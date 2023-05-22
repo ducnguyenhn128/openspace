@@ -8,7 +8,7 @@ const Logout  = () => {
     const navigate = useNavigate();
     const handleLogout = async () => {
       try {
-        await axios.post('http://localhost:8000/api/logout', null, {
+        await axios.post('https://openspacebe.vercel.app/api/logout', null, {
           withCredentials: true,
         });
     

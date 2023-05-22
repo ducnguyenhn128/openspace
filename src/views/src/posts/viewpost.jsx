@@ -10,7 +10,7 @@ import Header from '../header'
 
 const ViewPost = () => {
     const {id} = useParams();
-    const URL = 'http://localhost:8000/post/' + id ;
+    const URL = 'https://openspacebe.vercel.app/post/' + id ;
     const [author, setAuthor] = useState('Philippe Bernard Victor Troussier')
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('Lorem ipsum');

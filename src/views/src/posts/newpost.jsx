@@ -8,8 +8,8 @@ import axios from 'axios';
 import processHashtag from './processHashtagInput';
 import { useNavigate } from 'react-router-dom';
 
-const URL1 = 'http://localhost:8000/api/profile';
-const URL = 'http://localhost:8000/post'
+const URL1 = 'https://openspacebe.vercel.app/api/profile';
+const URL = 'https://openspacebe.vercel.app/post'
 const NewPost = () => {
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')

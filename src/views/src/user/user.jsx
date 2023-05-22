@@ -13,7 +13,7 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 const User = () => {
     const {id} = useParams();  //get the ID of the URL
-    const URL = 'http://localhost:8000/user/' + id ;
+    const URL = 'https://openspacebe.vercel.app/user/' + id ;
     const navigate = useNavigate()
     // Follow Status
     const [followStatus, setFollowStatus] = useState(true)

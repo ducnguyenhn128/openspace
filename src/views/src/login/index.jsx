@@ -27,7 +27,7 @@ const LogIn = () => {
         setNewUser({})
         // send data
 
-        fetch('http://localhost:8000/api/login', {
+        fetch('https://openspacebe.vercel.app/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

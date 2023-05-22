@@ -26,7 +26,7 @@ const Register = () => {
             // reset Form 
             setNewUser({})
             // send data
-            fetch('http://localhost:8000/api/', {
+            fetch('https://openspacebe.vercel.app/api/', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'

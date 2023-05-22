@@ -5,7 +5,7 @@ import FeedPost from '../newsFeed/feedPost';
 
 
 const TagPage = () => {
-    const URL = ''
+    const URL = 'https://openspacebe.vercel.app/'
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
