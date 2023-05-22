@@ -1,0 +1,38 @@
+.viewpost {
+    border: 1px solid rgb(218, 218, 218);
+    border-radius: 10px;
+    background-color: white;
+}
+
+
+
+.viewpost_info a:link {
+    text-decoration: none;
+    
+}
+
+.viewpost_info a:hover {
+    text-decoration: none;
+    
+}
+
+.viewpost_info a {
+    color: rgb(71, 71, 71);
+    font-weight: lighter;
+    font-size: 0.9em;
+}
+
+.viewpost_info a:hover {
+    text-decoration: underline;
+    color: rgb(71, 71, 71)
+  }
+
+
+/* User comment */
+.user-comment-avt {
+    height: 50px;
+    width: 50px;
+    background-color: cadetblue;
+    border-radius: 100%;
+    margin-right: 15px;
+}

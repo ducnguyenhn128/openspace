@@ -1,0 +1,26 @@
+body {
+    background-color: rgb(241, 241, 241);
+}
+
+
+.right_column * , .left_column *{
+    background-color: #F8F9FA;
+}
+
+
+
+.message_avt {
+    width: 35px;
+    height: 35px;
+    background-color: darkgoldenrod;
+    border-radius: 100%;
+    margin-right: 10px;
+}
+
+.user-avt {
+    height: 50px;
+    width: 50px;
+    background-color: cadetblue;
+    border-radius: 100%;
+    margin-right: 15px;
+}

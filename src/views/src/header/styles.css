@@ -1,0 +1,18 @@
+.header-search-input {
+    background-color: #479f76;
+    border: 0px ;
+    border-radius: 5px;
+    color: rgb(212, 209, 209);
+    padding: 10px
+}
+
+.header-search-input::placeholder {
+    color: rgb(255, 255, 255); /* Set the color to white */
+  }
+
+
+.header-search-input:focus {
+    color: rgb(255, 255, 255); /* Set the color to white */
+    outline: none;
+    padding: 10px
+}

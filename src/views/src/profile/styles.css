@@ -1,0 +1,40 @@
+.profile-stats {
+    color: white;
+    border-radius: 5px;
+}
+
+.profile-navi {
+    border-radius: 5%;
+}
+
+.profile-avt {
+    width: 140px;
+    height: 140px;
+    border-radius: 100%;
+    background-color: beige;
+    margin: 20px auto 20px auto;
+}
+
+.profile_link {
+    text-decoration: none;
+    color: black;
+    
+}
+
+.profile_link .custom-link:visited {
+    color: red;
+  }
+
+
+
+/* My Info */
+.profile-myInfo-allphoto {
+    /* position: absolute; */
+}
+
+.profile-myInfo-avt {
+    width: 150px;
+    height: 150px;
+    background-color: cadetblue;
+    border-radius: 100%;
+}

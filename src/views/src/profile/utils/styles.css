@@ -1,0 +1,11 @@
+.blocked_user {
+    border: 1px rgb(78, 78, 78) solid;
+    border-radius: 5px;
+}
+
+.blocked_user .avt{
+    height: 80px;
+    width: 80px;
+    background-color: rgb(168, 168, 168);
+    border-radius: 100%;
+}
