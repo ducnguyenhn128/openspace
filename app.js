@@ -18,7 +18,7 @@ const tagRouter = require('./src/controllers/tagRouter');
 
 // CORS
 app.use(cors({
-    origin: ['http://localhost:3000' ,'https://openspace10.netlify.app/' ] ,
+    origin: ['http://localhost:3000' ,'/\.netlify\.app$/}' ] ,
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
     credentials: true, // Allow credentials (e.g., cookies)
