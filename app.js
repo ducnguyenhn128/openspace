@@ -40,7 +40,7 @@ app.use('/api', userRouter)
 app.use('/user', profileRouter)
 app.use('/post', postRouter)
 app.use('/tag', tagRouter)
-app.get('/test', (req, res) => {
+app.get('/', (req, res) => {
     res.status(200).send('App is running')
 })
 
