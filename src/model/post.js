@@ -81,23 +81,31 @@ const postCRUD = {
         // query user follower array 
         const userID = req.user.userID;
         const user = await findUserById(userID);
-
         const userFollowing = user.follow.following;
         console.log(userFollowing)
-
+        // Get last 10 posts from user's following
         const posts = await postModel.find({ author: { $in: userFollowing }})
         .sort({ createdAt: -1 })
         .limit(10)
         .lean()
-    // handle array 
-    await Promise.all(
-        posts.map(async (post) => {
-            const authorname = await getAuthor(post);
-            post['authorname'] = authorname
-        })
-    )
-    console.log(posts)
-    res.status(200).json(posts)
+        // handle array: add author name from the array (to display in FE)
+        await Promise.all(
+            posts.map(async (post) => {
+                const authorname = await getAuthor(post);
+                post['authorname'] = authorname
+            })
+        )
+        console.log(posts)
+
+        // get fullname to respond
+        let fullname
+        if ( user.info.fullname === '') {
+            fullname = user.username
+        } else {
+            fullname = user.info.fullname
+        }
+        // Respond data
+        res.status(200).json({posts, fullname})
     },
     // 2. Get recent post globally: return an array
     lastestPostFeed: async function(req, res) {

@@ -1,4 +1,7 @@
+This is the backend of Open Space
+
 Connect Node JS with ExpressJS
+
 
 1. Dev NodeJS normal. Remember to use CORS
 2. In the Views folder , run npx create-react-app .
