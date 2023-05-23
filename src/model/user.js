@@ -140,8 +140,8 @@ const userCRUD = {
             res.cookie('jwtToken', token, {
                 httpOnly: true,
                 secure: true,
+                sameSite: 'none',
             });
-            // res.cookie('sites1', 'duc1111');
             res.status(200).json({token})
         } else {
             res.status(401).send('Wrong password')
