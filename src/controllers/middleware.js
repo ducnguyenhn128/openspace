@@ -19,15 +19,6 @@ const authentication = (req, res, next) => {
         const token = req.headers.cookie.slice(9);
         const decoded = jwt.verify(token, secretkey);
         req.user = decoded;
-
-        // get fullname to respond
-        // let fullname
-        // if ( req.user.info.fullname === '') {
-        //     fullname = req.user.username
-        // } else {
-        //     fullname = req.user.info.fullname
-        // }
-        // req.user_fullname = 'Duc'
         next();
     } catch(err) {
         console.log(err);
