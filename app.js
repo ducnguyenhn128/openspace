@@ -19,7 +19,7 @@ const tagRouter = require('./src/controllers/tagRouter');
 
 // CORS
 app.use(cors({
-    origin: true ,
+    origin: ['http://localhost:3000', 'https://openspaceweb.vercel.app//'], 
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
     credentials: true, // Allow credentials (e.g., cookies)
