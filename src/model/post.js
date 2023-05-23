@@ -18,6 +18,7 @@ const userModel = require('./user')
 mongoose.connect(URL)
 // Choose Database
 const db = mongoose.connection.useDb('openspace');
+const collection = db.collection('posts')
 
 // Define Schema
 const postSchema = {
@@ -190,7 +191,6 @@ const postCRUD = {
         }
     }
 }
-
 
 
 
