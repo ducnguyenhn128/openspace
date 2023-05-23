@@ -40,7 +40,7 @@ userRouter.get('/profile', authentication, userProfile)
 userRouter.use(authentication)
 userRouter.get('/all', userCRUD.get)
 userRouter.get('/:id', userCRUD.getById)
-userRouter.put('/:id', userCRUD.put)
+userRouter.put('/:id', userCRUD.put)  // update info
 userRouter.delete('/:id', userCRUD.delete)
 
 

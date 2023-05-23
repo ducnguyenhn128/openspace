@@ -26,6 +26,7 @@ app.use(cors({
   }));
   
 // Body parser
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
 
