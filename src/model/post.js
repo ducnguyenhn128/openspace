@@ -9,13 +9,16 @@
 // 7. Get all posts by tag
 
 require('dotenv').config();
-const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
+// const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
+const URL = process.env.MONGODB_URL
+
 const mongoose = require('mongoose');
 const { findUserById } = require('./user');
 const userModel = require('./user')
 mongoose.connect(URL)
 // Choose Database
 const db = mongoose.connection.useDb('openspace');
+const collection = db.collection('posts')
 
 // Define Schema
 const postSchema = {
@@ -79,31 +82,35 @@ const postCRUD = {
         // query user follower array 
         const userID = req.user.userID;
         const user = await findUserById(userID);
-
         const userFollowing = user.follow.following;
         console.log(userFollowing)
-
+        // Get last 10 posts from user's following
         const posts = await postModel.find({ author: { $in: userFollowing }})
-        .sort({ createdAt: -1 })
-        .limit(10)
-        .lean()
-    // handle array 
-    await Promise.all(
-        posts.map(async (post) => {
-            const authorname = await getAuthor(post);
-            post['authorname'] = authorname
-        })
-    )
-    console.log(posts)
-    res.status(200).json(posts)
+            .sort({ createdAt: -1 })
+            .limit(10)
+            .lean()
+        // handle array: add author name from the array (to display in FE)
+        await Promise.all(
+            posts.map(async (post) => {
+                const authorname = await getAuthor(post);
+                post['authorname'] = authorname;
+            })
+        )
+        console.log(posts);
+        let fullname = 'Tran Minh Chien'
+        // Respond data
+        res.status(200).json(posts)
     },
     // 2. Get recent post globally: return an array
     lastestPostFeed: async function(req, res) {
+        // query user
+        const userID = req.user.userID;
+        const user = await findUserById(userID);
         const posts = await postModel.find()
             .sort({ createdAt: -1 })
             .limit(10)
             .lean()
-        // handle array 
+        // handle array: add author name from the array (to display in FE)
         await Promise.all(
             posts.map(async (post) => {
                 const authorname = await getAuthor(post);
@@ -111,6 +118,8 @@ const postCRUD = {
             })
         )
         console.log(posts)
+        
+        // let fullname = req.user_fullname
         res.status(200).json(posts)
     },
 
@@ -168,15 +177,20 @@ const postCRUD = {
                 .sort({ createdAt: -1 })
                 .limit(10)
                 .lean();
-
-                res.status(200).json(posts);
+            // handle array: add author name from the array (to display in FE)
+            await Promise.all(
+                posts.map(async (post) => {
+                    const authorname = await getAuthor(post);
+                    post['authorname'] = authorname
+                })
+            )
+            res.status(200).json(posts);
         } catch(err) {
             console.log(err);
             res.status(404).send();
         }
     }
 }
-
 
 
 

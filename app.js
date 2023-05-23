@@ -4,7 +4,8 @@ const PORT = process.env.PORT || 8000;
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
-// const authentication = require('./src/controllers/middleware')
+
+const author1 = process.env.AUTHOR
 
 // For handlebars
 const path = require('path');
@@ -25,6 +26,7 @@ app.use(cors({
   }));
   
 // Body parser
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
 
@@ -46,4 +48,5 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server is listening at ${PORT}`);
+    // console.log(URL)
 })
