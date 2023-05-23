@@ -21,13 +21,13 @@ const authentication = (req, res, next) => {
         req.user = decoded;
 
         // get fullname to respond
-        let fullname
-        if ( user.info.fullname === '') {
-            fullname = user.username
-        } else {
-            fullname = user.info.fullname
-        }
-        req.user_fullname = fullname;
+        // let fullname
+        // if ( user.info.fullname === '') {
+        //     fullname = user.username
+        // } else {
+        //     fullname = user.info.fullname
+        // }
+        // req.user_fullname = fullname;
         next();
     } catch(err) {
         console.log(err);
