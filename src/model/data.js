@@ -41,26 +41,6 @@ const sample = {
         "who_can_view" : "everyone",
         "who_can_comment" : "friend"
     },
-    "posts " : [
-        {
-            "id": "57103457340957",
-            "time" : "20 Mar 2023",
-            "content" : "Hello world",
-            "hasgtag" : ["football", "fifaworld"],
-            "user_liked" : [],
-            "user_shared" : [],
-            "comment" : {}
-        } ,
-        {
-            "id": "2375012357891357",
-            "time" : "4 May 2023",
-            "content" : "In coming today",
-            "hasgtag" : ["cars", "speed"],
-            "user_liked" : [],
-            "user_shared": [],
-            "comment" : {}
-        }
-    ] 
 }
 
 const userProtype = 

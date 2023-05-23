@@ -9,7 +9,9 @@
 // 7. Get all posts by tag
 
 require('dotenv').config();
-const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
+// const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
+const URL = process.env.MONGODB_URL
+
 const mongoose = require('mongoose');
 const { findUserById } = require('./user');
 const userModel = require('./user')
