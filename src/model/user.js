@@ -137,10 +137,15 @@ const userCRUD = {
             
             const token = jwt.sign(payload, secretkey, {expiresIn: '30d'})
             // Set the token as a cookie in the response
+
+            const expiresDate = new Date();
+            expiresDate.setDate(expiresDate.getDate() + 7); // expire 7 days
+
             res.cookie('jwtToken', token, {
                 httpOnly: true,
                 secure: true,
                 sameSite: 'none',
+                expires: expiresDate,
             });
             res.status(200).json({token})
         } else {
