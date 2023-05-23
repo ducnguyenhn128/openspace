@@ -109,7 +109,7 @@ const postCRUD = {
             .sort({ createdAt: -1 })
             .limit(10)
             .lean()
-        // handle array 
+        // handle array: add author name from the array (to display in FE)
         await Promise.all(
             posts.map(async (post) => {
                 const authorname = await getAuthor(post);
@@ -176,8 +176,14 @@ const postCRUD = {
                 .sort({ createdAt: -1 })
                 .limit(10)
                 .lean();
-
-                res.status(200).json(posts);
+            // handle array: add author name from the array (to display in FE)
+            await Promise.all(
+                posts.map(async (post) => {
+                    const authorname = await getAuthor(post);
+                    post['authorname'] = authorname
+                })
+            )
+            res.status(200).json(posts);
         } catch(err) {
             console.log(err);
             res.status(404).send();
