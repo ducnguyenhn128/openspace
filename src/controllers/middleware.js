@@ -22,13 +22,13 @@ const authentication = (req, res, next) => {
 
         // get fullname to respond
         // let fullname
-        // if ( user.info.fullname === '') {
-        //     fullname = user.username
+        // if ( req.user.info.fullname === '') {
+        //     fullname = req.user.username
         // } else {
-        //     fullname = user.info.fullname
+        //     fullname = req.user.info.fullname
         // }
-        // req.user_fullname = fullname;
-        next();
+        // req.user_fullname = 'Duc'
+        // next();
     } catch(err) {
         console.log(err);
         res.status(200).send('Invalid Token');

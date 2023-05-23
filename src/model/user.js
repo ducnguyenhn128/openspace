@@ -8,7 +8,7 @@ require('dotenv').config();
 // Connect to MongoDB
 
 const URL = process.env.MONGODB_URL
-// const URL1 = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
+
 mongoose.connect(URL)
 // Choose Database
 const db = mongoose.connection.useDb('openspace');

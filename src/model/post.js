@@ -85,9 +85,9 @@ const postCRUD = {
         console.log(userFollowing)
         // Get last 10 posts from user's following
         const posts = await postModel.find({ author: { $in: userFollowing }})
-        .sort({ createdAt: -1 })
-        .limit(10)
-        .lean()
+            .sort({ createdAt: -1 })
+            .limit(10)
+            .lean()
         // handle array: add author name from the array (to display in FE)
         await Promise.all(
             posts.map(async (post) => {
@@ -97,7 +97,7 @@ const postCRUD = {
         )
         console.log(posts)
         
-        // let fullname = req.user_fullname
+        let fullname = 'Tran Minh Chien'
         // Respond data
         res.status(200).json(posts)
     },
