@@ -28,7 +28,7 @@ const authentication = (req, res, next) => {
         //     fullname = req.user.info.fullname
         // }
         // req.user_fullname = 'Duc'
-        // next();
+        next();
     } catch(err) {
         console.log(err);
         res.status(200).send('Invalid Token');
