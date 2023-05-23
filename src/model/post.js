@@ -97,9 +97,9 @@ const postCRUD = {
         )
         console.log(posts)
         
-        let fullname = req.user_fullname
+        // let fullname = req.user_fullname
         // Respond data
-        res.status(200).json({posts, fullname})
+        res.status(200).json(posts)
     },
     // 2. Get recent post globally: return an array
     lastestPostFeed: async function(req, res) {
@@ -119,8 +119,8 @@ const postCRUD = {
         )
         console.log(posts)
         
-        let fullname = req.user_fullname
-        res.status(200).json({posts, fullname})
+        // let fullname = req.user_fullname
+        res.status(200).json(posts)
     },
 
     // 3. Create a post: /post
