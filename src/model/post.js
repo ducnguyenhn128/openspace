@@ -96,19 +96,16 @@ const postCRUD = {
             })
         )
         console.log(posts)
-
-        // get fullname to respond
-        let fullname
-        if ( user.info.fullname === '') {
-            fullname = user.username
-        } else {
-            fullname = user.info.fullname
-        }
+        
+        let fullname = req.user_fullname
         // Respond data
         res.status(200).json({posts, fullname})
     },
     // 2. Get recent post globally: return an array
     lastestPostFeed: async function(req, res) {
+        // query user
+        const userID = req.user.userID;
+        const user = await findUserById(userID);
         const posts = await postModel.find()
             .sort({ createdAt: -1 })
             .limit(10)
@@ -121,7 +118,9 @@ const postCRUD = {
             })
         )
         console.log(posts)
-        res.status(200).json(posts)
+        
+        let fullname = req.user_fullname
+        res.status(200).json({posts, fullname})
     },
 
     // 3. Create a post: /post
