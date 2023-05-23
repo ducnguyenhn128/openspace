@@ -92,14 +92,13 @@ const postCRUD = {
         await Promise.all(
             posts.map(async (post) => {
                 const authorname = await getAuthor(post);
-                post['authorname'] = authorname
+                post['authorname'] = authorname;
             })
         )
-        console.log(posts)
-        
+        console.log(posts);
         let fullname = 'Tran Minh Chien'
         // Respond data
-        res.status(200).json(posts)
+        res.status(200).json({posts, fullname})
     },
     // 2. Get recent post globally: return an array
     lastestPostFeed: async function(req, res) {
