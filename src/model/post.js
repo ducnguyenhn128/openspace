@@ -98,7 +98,7 @@ const postCRUD = {
         console.log(posts);
         let fullname = 'Tran Minh Chien'
         // Respond data
-        res.status(200).json({posts, fullname})
+        res.status(200).json(posts)
     },
     // 2. Get recent post globally: return an array
     lastestPostFeed: async function(req, res) {
