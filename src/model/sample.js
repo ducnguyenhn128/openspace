@@ -48,12 +48,7 @@ const userProtype =
     "info" : {
         "fullname" : "",
         "DOB" : "",
-        "gerder" : "",
-        "location" : {
-            "city" : "",
-            "country" : ""
-        },
-        "bio" : ""
+        "gender" : "",
     },
     "stats" : {
         "follower" : 0,

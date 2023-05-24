@@ -13,13 +13,12 @@ require('dotenv').config();
 const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
 // const URL = process.env.MONGODB_URL
 
-const mongoose = require('mongoose');
 const { findUserById } = require('./user');
+const mongoose = require('mongoose');
 const userModel = require('./user')
 mongoose.connect(URL)
 // Choose Database
 const db = mongoose.connection.useDb('openspace');
-const collection = db.collection('posts')
 
 // Define Schema
 const postSchema = {
@@ -68,11 +67,12 @@ const postModel = db.model('posts', postSchema)
 const getAuthor = async (post) => {
     const authorID = post.author ? post.author : '';
     const author = await findUserById(authorID);
-    if (author.info && author.info.fullname) {
-        return author.info.fullname
-    } else {
-        return ''
-    }
+    return author.fullname
+    // if (author.info && author.info.fullname) {
+    //     return author.info.fullname
+    // } else {
+    //     return ''
+    // }
     // return authorName;
 }
 
@@ -193,6 +193,41 @@ const postCRUD = {
         }
     },
     // 8. Get top creators
+    topCreator : async function(req, res) {
+        const data = await postModel.aggregate([
+            {
+                $group: {
+                  _id: '$author',
+                  count: { $sum: 1 } // author post
+                }, 
+            },
+            {$limit: 10} , 
+            {
+                $sort: {
+                  count: -1 
+                }
+            }
+        ])
+        // data: [{_id: 42314153, count: 12}, ......]
+        // Handle Data to send Client
+        async function getTopCreator() {
+            const topCreator = await Promise.all(
+                data.map( async (el) => {
+                    const id = el._id;
+                    const user = await findUserById(id);
+                    // console.log(user)
+                    let fullname = user.fullname
+                    // return avatar
+                    return ({id: id, fullname: fullname})
+            }))
+            console.log(topCreator)
+            return topCreator
+        }
+
+        getTopCreator()
+            .then(result => res.status(200).send(result))
+
+    }
 }
 
 

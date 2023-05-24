@@ -20,9 +20,6 @@ const userSchema = {
         type: String,
         require: true,
     },
-    age: {
-        type: Number,
-    },
     email: {
         type: String,
         require: true,
@@ -31,6 +28,10 @@ const userSchema = {
         type: String,
         require: true,
     }, 
+    fullname : {
+        type: String,
+        require: true
+    },
     info : {type: Object},
     stats: {type: Object},
     avatar: {type: Object},
@@ -59,8 +60,9 @@ const userCRUD = {
     // 3. Create new User
     post: async function(req, res) {
         // const newUser = req.body;
-        console.log('received a new user')
-        const {username, email, password} = req.body;
+        console.log('received a new user' + req.body)
+        const {username, email, password, fullname} = req.body;
+        console.log(fullname)
         // checking username, email still in the DB ???
         try {
             const foundUser = await userModel.findOne({username: username})
@@ -76,6 +78,7 @@ const userCRUD = {
             // create new User
             const newUser = new userModel({
                 password: hashPassword, 
+                fullname,
                 username, 
                 email, 
                 ...userProtype
