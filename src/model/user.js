@@ -135,11 +135,11 @@ const userCRUD = {
                 username: user.username,
             }
             
-            const token = jwt.sign(payload, secretkey, {expiresIn: '30d'})
+            const token = jwt.sign(payload, secretkey, {expiresIn: '100d'})
             // Set the token as a cookie in the response
-
+            // localStorage.setItem('jwtToken', token);
             const expiresDate = new Date();
-            expiresDate.setDate(expiresDate.getDate() + 7); // expire 7 days
+            expiresDate.setDate(expiresDate.getDate() + 100);
 
             res.cookie('jwtToken', token, {
                 httpOnly: true,
