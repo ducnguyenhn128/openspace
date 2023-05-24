@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const secretkey = 'ab240f90aba431402985eddc45f4d413a33ebc925575c558168a98b2c38033a6';
 const jwt = require('jsonwebtoken')
-const userProtype = require('./data');
+const userProtype = require('./sample');
 
 // Connect to MongoDB
-// const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
-const URL = process.env.MONGODB_URL
+const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
+// const URL = process.env.MONGODB_URL
 
 mongoose.connect(URL)
 // Choose Database

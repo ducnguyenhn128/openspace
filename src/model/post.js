@@ -9,8 +9,8 @@
 // 7. Get all posts by tag
 
 require('dotenv').config();
-// const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
-const URL = process.env.MONGODB_URL
+const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
+// const URL = process.env.MONGODB_URL
 
 const mongoose = require('mongoose');
 const { findUserById } = require('./user');
@@ -96,7 +96,7 @@ const postCRUD = {
                 post['authorname'] = authorname;
             })
         )
-        console.log(posts);
+        // console.log(posts);
         let fullname = 'Tran Minh Chien'
         // Respond data
         res.status(200).json(posts)
@@ -117,14 +117,14 @@ const postCRUD = {
                 post['authorname'] = authorname
             })
         )
-        console.log(posts)
+        // console.log(posts)
         
         // let fullname = req.user_fullname
         res.status(200).json(posts)
     },
 
     // 3. Create a post: /post
-    post : async function (req, res) {
+    post : async function (req, res, next) {
         console.log(`Receive a new post`)
         const {title, body, tagList, createdAt } = req.body;
         try {
@@ -138,7 +138,8 @@ const postCRUD = {
             await newPost.save();
             res.status(201).json({
                 message: 'Post successful'
-            })
+            });
+            next();
         } catch(err) {
             console.log(err);
             res.status(500).send();
