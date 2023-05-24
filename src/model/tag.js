@@ -48,6 +48,7 @@ const createTag = async (tag) => {
 }
 
 const tagCRUD = {
+    // 1. Update to tag collection in DB when user posts a new post
     newPost: async function(req, res, next) {
         try {
             const {tagList} = req.body;
@@ -73,6 +74,7 @@ const tagCRUD = {
     // 2. Get most common tag
     getTop10: async function(req, res) {
         try {
+            console.log(`receive`)
             const top10Tag = await tagModel.find().sort({count: -1})
                 .limit(10)
                 .lean()

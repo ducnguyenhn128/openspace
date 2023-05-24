@@ -7,6 +7,7 @@
 // 5. Update a post
 // 6. Delete a post
 // 7. Get all posts by tag
+// 8. Get top creators
 
 require('dotenv').config();
 const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
@@ -63,7 +64,7 @@ const postSchema = {
 const postModel = db.model('posts', postSchema)
 
 // Utility function
-// getAuthor from the id
+// getAuthor from the post id
 const getAuthor = async (post) => {
     const authorID = post.author ? post.author : '';
     const author = await findUserById(authorID);
@@ -190,7 +191,8 @@ const postCRUD = {
             console.log(err);
             res.status(404).send();
         }
-    }
+    },
+    // 8. Get top creators
 }
 
 
