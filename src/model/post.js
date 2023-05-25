@@ -82,7 +82,7 @@ const postCRUD = {
         // 2.  Get last 10 posts from user's following
         const posts = await postModel.find({ author: { $in: userFollowing }})
             .sort({ createdAt: -1 })
-            .limit(10)
+            .limit(100)
             .lean()
         // 3: Handle array: add author name from the array (to display in FE)
         // 4: Handle array: add client Like Status from the array (to display in FE)
@@ -107,7 +107,7 @@ const postCRUD = {
         // 2: Get all Posts
         const posts = await postModel.find()
             .sort({ createdAt: -1 })
-            .limit(10)
+            .limit(100)
             .lean()
         // 3: Handle array: add author name from the array (to display in FE)
         // 4: Handle array: add client Like Status from the array (to display in FE)
@@ -153,14 +153,17 @@ const postCRUD = {
         try {
             const id = req.params.id;
             const foundPost = await postModel.findById(id);
+            // console.log(foundPost)
+            const {author, title, body, createdAt, favorited, favoritedCount, _id} = foundPost;
+            const result = {_id, author, title, body, createdAt, favorited, favoritedCount}
             // Find the author by the authod id: ex: author: '6468dde45ed7ce6ab3d8279f' => userID
-            const author = await findUserById(foundPost.author);
-            const authorName = author.info.fullname;
-
-            res.status(200).json({
-                post:foundPost,
-                author: authorName,
-            })
+            const author1 = await findUserById(foundPost.author);
+            result.fullname = author1.fullname
+            // console.log(result)
+            // Check user has liked post yet ?
+            const userID = req.user.userID;
+            result.userLikeStatus = foundPost.favorited.includes(userID)  // check whether or not the array contain all people liked post includes uesrID ?
+            res.status(200).json(result)
         } catch(err) {
             console.log(err);
             res.status(204).send();
