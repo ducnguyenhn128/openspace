@@ -68,59 +68,61 @@ const getAuthor = async (post) => {
     const authorID = post.author ? post.author : '';
     const author = await findUserById(authorID);
     return author.fullname
-    // if (author.info && author.info.fullname) {
-    //     return author.info.fullname
-    // } else {
-    //     return ''
-    // }
-    // return authorName;
 }
 
 
 const postCRUD = {
     // 1. Get recent post from user you follow
     userFollowFeed: async function(req, res) {
-        // query user follower array 
+        // 1.  query user follower array 
         const userID = req.user.userID;
         const user = await findUserById(userID);
         const userFollowing = user.follow.following;
         console.log(userFollowing)
-        // Get last 10 posts from user's following
+        // 2.  Get last 10 posts from user's following
         const posts = await postModel.find({ author: { $in: userFollowing }})
             .sort({ createdAt: -1 })
             .limit(10)
             .lean()
-        // handle array: add author name from the array (to display in FE)
+        // 3: Handle array: add author name from the array (to display in FE)
+        // 4: Handle array: add client Like Status from the array (to display in FE)
         await Promise.all(
             posts.map(async (post) => {
                 const authorname = await getAuthor(post);
                 post['authorname'] = authorname;
+                const checkUserLikePost = post.favorited.includes(userID)
+                console.log(checkUserLikePost)
+                post['userLikeStatus'] = checkUserLikePost      //add client Like Status
             })
         )
         // console.log(posts);
-        let fullname = 'Tran Minh Chien'
         // Respond data
         res.status(200).json(posts)
     },
     // 2. Get recent post globally: return an array
     lastestPostFeed: async function(req, res) {
-        // query user
+        // 1: query user
         const userID = req.user.userID;
-        const user = await findUserById(userID);
+        // const user = await findUserById(userID);
+        // 2: Get all Posts
         const posts = await postModel.find()
             .sort({ createdAt: -1 })
             .limit(10)
             .lean()
-        // handle array: add author name from the array (to display in FE)
+        // 3: Handle array: add author name from the array (to display in FE)
+        // 4: Handle array: add client Like Status from the array (to display in FE)
         await Promise.all(
             posts.map(async (post) => {
                 const authorname = await getAuthor(post);
-                post['authorname'] = authorname
+                post['authorname'] = authorname   //add author name
+                const checkUserLikePost = post.favorited.includes(userID)
+                console.log(checkUserLikePost)
+                post['userLikeStatus'] = checkUserLikePost      //add client Like Status
             })
         )
         // console.log(posts)
-        
-        // let fullname = req.user_fullname
+        // 4: Handle array: add client Like Status from the array (to display in FE)
+        //  check 'clientID' in the favorite array
         res.status(200).json(posts)
     },
 
@@ -220,13 +222,55 @@ const postCRUD = {
                     // return avatar
                     return ({id: id, fullname: fullname})
             }))
-            console.log(topCreator)
+            // console.log(topCreator)
             return topCreator
         }
 
         getTopCreator()
             .then(result => res.status(200).send(result))
 
+    } , 
+    // 9. User like/unlike a post
+    userLikePost : async function(req, res) {
+        // console.log(`Server receive a post like request`);
+        const {userID, postID} = req.body;
+        // foundpost
+        try {
+            const foundPost = await postModel.findById(postID);
+            if (!foundPost) {
+                res.status(404).send();
+            }
+            // check user has liked post already ????
+            // console.log(userID)
+            // const checkUserLikePost = await postModel.findOne({favorited: { $in : userID}})
+            const checkUserLikePost = foundPost.favorited.includes(userID)
+            // has not liked yet
+            if (!checkUserLikePost) {
+                await postModel.findByIdAndUpdate(
+                    postID,
+                    {                    
+                        $inc : {favoritedCount : 1},
+                        $push: {favorited: userID}
+                    },
+                    {new: true}
+
+                )
+            }
+            // has liked
+            if (checkUserLikePost) {
+                await postModel.findByIdAndUpdate(
+                    postID,
+                    {
+                        $inc : {favoritedCount : -1},
+                        $pull: {favorited: userID}
+                    }
+                )
+                
+            }
+            res.status(200).send()
+        } catch(err) {
+            console.log(err)
+        }
     }
 }
 

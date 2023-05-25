@@ -25,12 +25,13 @@ postRouter.get('/feed-global', postCRUD.lastestPostFeed)
 postRouter.post('/', postCRUD.post, tagCRUD.newPost, tagCRUD.getTop10)  
 // 8. Get top creators
 postRouter.get('/topcreator', postCRUD.topCreator)
+// 9. User like/unlike a post
+postRouter.put('/like', postCRUD.userLikePost)
 // 4. Get a post by id 
 postRouter.get('/:id', postCRUD.getPostById)
 // 5. Update a post
 // 6. Delete a post
 // 7. Get all posts by tag: Handle at tag router
-
 
 
 
