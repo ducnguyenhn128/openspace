@@ -293,21 +293,6 @@ const postCRUD = {
         }
     }, 
 
-    sandbox: async function(req,res) {
-        const pageSize = 10; // Number of items per page
-        const pageNumber = req.query.page || 1
-
-        const skip = (pageNumber - 1) * pageSize; // Calculate the number of records to skip
-        const limit = pageSize; // Set the limit to the number of items per page
-
-        const posts = await postModel.find()
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit);
-
-        console.log(posts);
-        res.status(200).send(posts)
-    }
 }
 
 

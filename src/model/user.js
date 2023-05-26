@@ -34,7 +34,7 @@ const userSchema = {
     },
     info : {type: Object},
     stats: {type: Object},
-    avatar: {type: Object},
+    avatar: {type: String},
     follow: {type: Object},
     privacy: {type: Object},
 }
@@ -155,7 +155,13 @@ const userCRUD = {
             res.status(401).send('Wrong password')
         }
         
-    },
+    }
+
+    // 7. Change Avatar
+    // avt: async function(req, res) {
+    //     const id = req.params.id;
+
+    // }
 }
 
 async function userProfile(req, res) {

@@ -15,7 +15,7 @@ const tagCRUD = require('../model/tag')
 const postRouter = express.Router();
 
 
-postRouter.get('/sandbox', postCRUD.sandbox)
+
 
 // middleware
 postRouter.use(authentication)
