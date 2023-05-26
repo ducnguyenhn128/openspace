@@ -16,7 +16,6 @@ const postRouter = express.Router();
 
 
 
-
 // middleware
 postRouter.use(authentication)
 // 1. Get recent post from user you follow

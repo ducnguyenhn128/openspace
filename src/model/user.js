@@ -4,14 +4,20 @@ const secretkey = 'ab240f90aba431402985eddc45f4d413a33ebc925575c558168a98b2c3803
 const jwt = require('jsonwebtoken')
 const userProtype = require('./sample');
 require('dotenv').config();
+const cloudinary = require('cloudinary').v2
+const multer = require('multer');
+const path = require('path');
 
+
+// ===================================================
+// ===================================================
 // Connect to MongoDB
 const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
 // const URL = process.env.MONGODB_URL
-
 mongoose.connect(URL)
 // Choose Database
 const db = mongoose.connection.useDb('openspace');
+
 
 
 // Define Schema
@@ -37,10 +43,24 @@ const userSchema = {
     avatar: {type: String},
     follow: {type: Object},
     privacy: {type: Object},
+    avatar: {type: String, require: true}
 }
 
 // Define Model
 const userModel = db.model('users', userSchema)
+
+
+// =======================================================
+// =======================================================
+// Cloudianary
+const cloud_api_secret = process.env.CLOUDIANARY_API_SECRET;
+cloudinary.config({ 
+    cloud_name: 'dc5rnju9w', 
+    api_key: '443777163226163', 
+    api_secret: cloud_api_secret 
+});
+
+const defaultAvatar = 'https://res.cloudinary.com/dc5rnju9w/image/upload/v1685117147/dfavt_g9vebu.webp'
 
 const userCRUD = {
     // 1. Get All Users
@@ -78,6 +98,7 @@ const userCRUD = {
             // create new User
             const newUser = new userModel({
                 password: hashPassword, 
+                avatar: defaultAvatar,
                 fullname,
                 username, 
                 email, 
@@ -155,14 +176,42 @@ const userCRUD = {
             res.status(401).send('Wrong password')
         }
         
-    }
+    },
 
     // 7. Change Avatar
-    // avt: async function(req, res) {
-    //     const id = req.params.id;
+    avatar: async function(req, res, next) {
+        console.log(`Received a new avatar request`)
+        const userID = req.user.userID;  // client 
+        const file = req.file;
+        if (!file) {
+            const error = new Error('Please upload a file')
+            res.status(404).send(error)
+        }
+        const filepath = file.path;
+        // 2. Upload image to Cloudianary
+        cloudinary.uploader.upload(filepath, async function(error, result) {
+            if (error) {
+              console.log(error);
+              return res.status(500).send('Error uploading image');
+            }
+            console.log(result.url);
+            req.newURL = result.url
+            try {
+                 // 3. Update client infomation
+                const response = await userModel.findByIdAndUpdate(userID, { avatar: req.newURL })
+                console.log('New avatar posted successful');
+                // res.status(200).send('Update success');
+                res.redirect('/profile')
+            } catch(err) {
+                console.log(err)
+                res.status(500).send('Error updating database');
+            }
+        })
+       
 
-    // }
+    }
 }
+
 
 async function userProfile(req, res) {
     const id = req.user.userID;
@@ -182,5 +231,14 @@ async function findUserById(id) {
         console.log(err)
     }
 }
+
+async function getUserAvatar(id) {
+    try {
+        const foundUser = await userModel.findById(id);
+        return foundUser.avatar
+    } catch(err) {
+        console.log(err)
+    }
+}
 // Export object
-module.exports = {userCRUD, userProfile, findUserById }
+module.exports = {userCRUD, userProfile, findUserById, getUserAvatar }

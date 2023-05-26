@@ -47,9 +47,7 @@ app.get('/', (req, res) => {
     res.status(200).send('App is running')
 })
 
-// =======================================================
-// SANDBOX ZONE
-// Set Storage
+// Multer Set Storage
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, 'uploads')
@@ -63,21 +61,15 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage})
 
-app.post('/sandbox', upload.single('avatar'), (req, res) => {
+app.post('/sandbox', upload.single('avatar'), (req, res,next) => {
     const file = req.file;
     if (!file) {
         const error = new Error('Please upload a file')
         res.status(404).send(error)
     }
     const filePath = file.path;
-    res.status(201).send({ message: 'File received', filePath });
+    req.filepath = filePath;
 })
-
-
-
-
-
-
 
 
 app.listen(PORT, () => {

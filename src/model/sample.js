@@ -46,41 +46,23 @@ const sample = {
 const userProtype = 
 {
     "info" : {
-        "fullname" : "",
         "DOB" : "",
         "gender" : "",
     },
     "stats" : {
         "follower" : 0,
         "following" : 0,
-        "posts" : 0,
-        "friends" : 0
+        "posts" : 0
     },
-    "avatar": {
-        "profile_pic": {
-            "url": "https://example.com/profile_pic.jpg",
-            "width": 800,
-            "height": 600,
-            "caption": "Profile picture"
-        },
-        "cover_photo": {
-            "url": "https://example.com/cover_photo.jpg",
-            "width": 1200,
-            "height": 800,
-            "caption": "Cover photo"
-        }
-    },
+
     "follow" : {
         "follower" : [],
-        "following" : [] ,
-        "blocked" : [] 
+        "following" : [] 
     },
     "privacy" : {
         "who_can_view" : "everyone",
         "who_can_comment" : "friend"
-    },
-    "posts " : [
-    ] 
+    }
 }
 
 module.exports = userProtype;

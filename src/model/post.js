@@ -13,7 +13,8 @@ require('dotenv').config();
 const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
 // const URL = process.env.MONGODB_URL
 
-const { findUserById } = require('./user');
+const { findUserById, getUserAvatar } = require('./user');
+
 const mongoose = require('mongoose');
 const userModel = require('./user')
 mongoose.connect(URL)
@@ -93,6 +94,7 @@ const postCRUD = {
         console.log(posts)
         // 3: Handle array: add author name from the array (to display in FE)
         // 4: Handle array: add client Like Status from the array (to display in FE)
+        // 5: add author avatar
         await Promise.all(
             posts.map(async (post) => {
                 const authorname = await getAuthor(post);
@@ -100,6 +102,7 @@ const postCRUD = {
                 const checkUserLikePost = post.favorited.includes(userID)
                 console.log(checkUserLikePost)
                 post['userLikeStatus'] = checkUserLikePost      //add client Like Status
+                post['author_avatar'] = await getUserAvatar(post.author)
             })
         )
         // console.log(posts);
@@ -127,19 +130,20 @@ const postCRUD = {
             .lean()
         console.log(posts)
         // 3: Handle array: add author name from the array (to display in FE)
-        // 4: Handle array: add client Like Status from the array (to display in FE)
+        // 4: Handle array: add client Like Status from the array (to display in FE) - check 'clientID' in the favorite array
+        // 5: add author avatar
         await Promise.all(
             posts.map(async (post) => {
                 const authorname = await getAuthor(post);
                 post['authorname'] = authorname   //add author name
-                const checkUserLikePost = post.favorited.includes(userID)
+                const checkUserLikePost = post.favorited.includes(userID)   // check like status
                 console.log(checkUserLikePost)
                 post['userLikeStatus'] = checkUserLikePost      //add client Like Status
+                post['author_avatar'] = await getUserAvatar(post.author)
             })
         )
-        // console.log(posts)
-        // 4: Handle array: add client Like Status from the array (to display in FE)
-        //  check 'clientID' in the favorite array
+        console.log(posts)
+
         res.status(200).json(posts)
     },
 
@@ -180,6 +184,9 @@ const postCRUD = {
             // Check user has liked post yet ?
             const userID = req.user.userID;
             result.userLikeStatus = foundPost.favorited.includes(userID)  // check whether or not the array contain all people liked post includes uesrID ?
+            // author avatar
+            result.author_avatar = await getUserAvatar(author)
+            console.log(result)
             res.status(200).json(result)
         } catch(err) {
             console.log(err);
@@ -239,8 +246,9 @@ const postCRUD = {
                     const user = await findUserById(id);
                     // console.log(user)
                     let fullname = user.fullname
+                    let avatar = user.avatar
                     // return avatar
-                    return ({id: id, fullname: fullname})
+                    return ({id: id, fullname: fullname, avatar})
             }))
             // console.log(topCreator)
             return topCreator
