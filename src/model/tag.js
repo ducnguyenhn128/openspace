@@ -74,7 +74,7 @@ const tagCRUD = {
     // 2. Get most common tag
     getTop10: async function(req, res) {
         try {
-            // console.log(`receive`)
+            // console.log(`receive`)npm 
             const top10Tag = await tagModel.find().sort({count: -1})
                 .limit(10)
                 .lean()

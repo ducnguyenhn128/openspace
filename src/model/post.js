@@ -80,10 +80,17 @@ const postCRUD = {
         const userFollowing = user.follow.following;
         console.log(userFollowing)
         // 2.  Get last 10 posts from user's following
+
+        const pageSize = 10; // Number of items per page
+        const pageNumber = req.query.page || 1
+        const skip = (pageNumber - 1) * pageSize; // Calculate the number of records to skip
+        const limit = pageSize; // Set the limit to the number of items per page
         const posts = await postModel.find({ author: { $in: userFollowing }})
             .sort({ createdAt: -1 })
-            .limit(100)
+            .skip(skip)
+            .limit(limit)
             .lean()
+        console.log(posts)
         // 3: Handle array: add author name from the array (to display in FE)
         // 4: Handle array: add client Like Status from the array (to display in FE)
         await Promise.all(
@@ -101,14 +108,24 @@ const postCRUD = {
     },
     // 2. Get recent post globally: return an array
     lastestPostFeed: async function(req, res) {
+
         // 1: query user
         const userID = req.user.userID;
         // const user = await findUserById(userID);
         // 2: Get all Posts
+
+        const pageSize = 10; // Number of items per page
+        const pageNumber = req.query.page || 1
+
+        const skip = (pageNumber - 1) * pageSize; // Calculate the number of records to skip
+        const limit = pageSize; // Set the limit to the number of items per page
+
         const posts = await postModel.find()
             .sort({ createdAt: -1 })
-            .limit(100)
+            .skip(skip)
+            .limit(limit)
             .lean()
+        console.log(posts)
         // 3: Handle array: add author name from the array (to display in FE)
         // 4: Handle array: add client Like Status from the array (to display in FE)
         await Promise.all(
@@ -274,6 +291,22 @@ const postCRUD = {
         } catch(err) {
             console.log(err)
         }
+    }, 
+
+    sandbox: async function(req,res) {
+        const pageSize = 10; // Number of items per page
+        const pageNumber = req.query.page || 1
+
+        const skip = (pageNumber - 1) * pageSize; // Calculate the number of records to skip
+        const limit = pageSize; // Set the limit to the number of items per page
+
+        const posts = await postModel.find()
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        console.log(posts);
+        res.status(200).send(posts)
     }
 }
 
