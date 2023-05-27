@@ -91,7 +91,7 @@ const userCRUD = {
                 res.status(500).send('Username has taken')
             }
             if (foundEmail) {
-                res.status(500).send('Email has taken')
+                res.status(500).send('Email has taken') 
             }
             // hash password by 10 rounds
             const hashPassword = await bcrypt.hash(password, 10);
@@ -200,8 +200,8 @@ const userCRUD = {
                  // 3. Update client infomation
                 const response = await userModel.findByIdAndUpdate(userID, { avatar: req.newURL })
                 console.log('New avatar posted successful');
-                // res.status(200).send('Update success');
-                res.redirect('/profile')
+                res.status(200).send('Update success');
+                // res.redirect('/profile')
             } catch(err) {
                 console.log(err)
                 res.status(500).send('Error updating database');

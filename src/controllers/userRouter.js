@@ -26,7 +26,7 @@ const upload = multer({storage: storage})
 
 
 // Regiter an user
-userRouter.post('/', userCRUD.post)
+userRouter.post('/register', userCRUD.post)
 
 // User Login
 userRouter.post('/login', userCRUD.login)
