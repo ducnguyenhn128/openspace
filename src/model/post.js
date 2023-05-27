@@ -307,11 +307,23 @@ const postCRUD = {
     }, 
     // 10. Get user's recent post
     userRecentPost: async function(req, res) {
+        const userID = req.user.userID
         try {
             const author = req.query.author
-            const recentPost = await postModel.find({author: author})
-            res.status(200).send(recentPost)
+            const recentPost = await postModel.find({author: author}).lean()
+            // handle array: add author name from the array (to display in FE)
+            await Promise.all(
+                recentPost.map(async (post) => {
+                    const authorname = await getAuthor(post);
+                    post['authorname'] = authorname
+                    const checkUserLikePost = post.favorited.includes(userID)   // check like status
+                    console.log(checkUserLikePost)
+                    post['userLikeStatus'] = checkUserLikePost      //add client Like Status
+                    post['author_avatar'] = await getUserAvatar(post.author)
+                })
+            )
             console.log(recentPost)
+            res.status(200).send(recentPost)
         } catch(err) {
             console.log(err)
         }
