@@ -8,10 +8,11 @@
 // 6. Delete a post
 // 7. Get all posts by tag
 // 8. Get top creators
-
+// 9. User like post
+// 10. Get user's recent post
 require('dotenv').config();
-const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
-// const URL = process.env.MONGODB_URL
+
+const URL = process.env.MONGODB_URL
 
 const { findUserById, getUserAvatar } = require('./user');
 
@@ -70,7 +71,6 @@ const getAuthor = async (post) => {
     const author = await findUserById(authorID);
     return author.fullname
 }
-
 
 const postCRUD = {
     // 1. Get recent post from user you follow
@@ -200,6 +200,7 @@ const postCRUD = {
 
     // 7. Get all posts by tag
     getPostByTag: async function (req, res) {
+        const userID = req.user.userID; // query client
         try {
             const tag = req.params.tag;
             console.log(tag)
@@ -213,6 +214,10 @@ const postCRUD = {
                 posts.map(async (post) => {
                     const authorname = await getAuthor(post);
                     post['authorname'] = authorname
+                    const checkUserLikePost = post.favorited.includes(userID)   // check like status
+                    console.log(checkUserLikePost)
+                    post['userLikeStatus'] = checkUserLikePost      //add client Like Status
+                    post['author_avatar'] = await getUserAvatar(post.author)
                 })
             )
             res.status(200).json(posts);
@@ -300,9 +305,18 @@ const postCRUD = {
             console.log(err)
         }
     }, 
+    // 10. Get user's recent post
+    userRecentPost: async function(req, res) {
+        try {
+            const author = req.query.author
+            const recentPost = await postModel.find({author: author})
+            res.status(200).send(recentPost)
+            console.log(recentPost)
+        } catch(err) {
+            console.log(err)
+        }
+    }
 
 }
-
-
 
 module.exports = postCRUD;

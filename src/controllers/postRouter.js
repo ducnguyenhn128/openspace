@@ -15,7 +15,6 @@ const tagCRUD = require('../model/tag')
 const postRouter = express.Router();
 
 
-
 // middleware
 postRouter.use(authentication)
 // 1. Get recent post from user you follow
@@ -28,6 +27,8 @@ postRouter.post('/', postCRUD.post, tagCRUD.newPost, tagCRUD.getTop10)
 postRouter.get('/topcreator', postCRUD.topCreator)
 // 9. User like/unlike a post
 postRouter.put('/like', postCRUD.userLikePost)
+// 10. Get user recent post
+postRouter.get('/user-recent-post', postCRUD.userRecentPost)
 // 4. Get a post by id 
 postRouter.get('/:id', postCRUD.getPostById)
 // 5. Update a post

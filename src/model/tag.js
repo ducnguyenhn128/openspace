@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
-const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
-// const URL = process.env.MONGODB_URL
+const URL = process.env.MONGODB_URL
 
 // Connect to MongoDB
 mongoose.connect(URL)

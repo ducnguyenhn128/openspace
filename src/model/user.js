@@ -5,15 +5,14 @@ const jwt = require('jsonwebtoken')
 const userProtype = require('./sample');
 require('dotenv').config();
 const cloudinary = require('cloudinary').v2
-const multer = require('multer');
-const path = require('path');
+// const multer = require('multer');
+// const path = require('path');
 
 
 // ===================================================
 // ===================================================
 // Connect to MongoDB
-const URL = 'mongodb+srv://ducnguyendautunhanha:gvAXtNESbIlZqOjb@cluster0.nkverec.mongodb.net/?retryWrites=true&w=majority'
-// const URL = process.env.MONGODB_URL
+const URL = process.env.MONGODB_URL
 mongoose.connect(URL)
 // Choose Database
 const db = mongoose.connection.useDb('openspace');
