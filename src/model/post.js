@@ -348,7 +348,9 @@ const postCRUD = {
         const userID = req.user.userID
         try {
             const author = req.query.author
-            const recentPost = await postModel.find({author: author}).lean()
+            const recentPost = await postModel.find({author: author})
+                .sort({createdAt: -1})
+                .lean()
             // handle array: add author name from the array (to display in FE)
             await Promise.all(
                 recentPost.map(async (post) => {

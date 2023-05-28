@@ -151,7 +151,7 @@ const userCRUD = {
         }
         // 2. foundUser, compare password
         const matchedPassword = bcrypt.compare(password, user.password);
-        if (matchedPassword) {
+        if (matchedPassword) {  
             // jwt token
             const payload = {
                 userID: user.id,
@@ -207,6 +207,21 @@ const userCRUD = {
         })
        
 
+    },
+    // 8. Change Password
+    password: async function(req,res) {
+        const userID = req.user.userID  //client
+        const {password} = req.body
+        // console.log(password)
+        // hash password by 10 rounds
+        const hashPassword = await bcrypt.hash(password, 10);
+        try {
+            const response = await userModel.findByIdAndUpdate(userID, {password: hashPassword})
+            res.status(200).send('Change password sucessful')
+        } catch(err) {
+            console.log(err) 
+            res.status(500).send();
+        }
     }
 }
 
