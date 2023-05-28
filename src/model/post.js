@@ -46,6 +46,9 @@ const postSchema = {
         type: String,
         require: true,
     },
+    image: {
+        type: String
+    },
     // After post : 3 field
     updatedAt : {
         type: String,

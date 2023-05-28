@@ -15,7 +15,7 @@ const tagCRUD = require('../model/tag')
 const postRouter = express.Router();
 
 
-// middleware
+// middleware  
 postRouter.use(authentication)
 // 1. Get recent post from user you follow
 postRouter.get('/feed-follow', postCRUD.userFollowFeed)
