@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
+const path = require('path');
 const secretkey = 'ab240f90aba431402985eddc45f4d413a33ebc925575c558168a98b2c38033a6';
 
 //The authentication middleware will do
@@ -22,4 +24,19 @@ const authentication = (req, res, next) => {
         res.status(200).send('Invalid Token');
     }
 }
-module.exports = authentication
+
+// Multer Set Storage
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads')
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+      const fileExtension = path.extname(file.originalname);
+    cb(null, file.fieldname + '-' + uniqueSuffix + fileExtension);
+    }  
+  })
+  const upload = multer({storage: storage})
+  
+
+module.exports = {authentication, upload}

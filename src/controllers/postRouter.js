@@ -9,11 +9,12 @@
 // 7. Get all posts by tag
 // 8. Get top creators
 const express = require('express');
-const authentication = require('./middleware');
+const {authentication, upload} = require('./middleware');
 const postCRUD = require('../model/post');
 const tagCRUD = require('../model/tag')
 const postRouter = express.Router();
-
+// const multer = require('multer');
+// const path = require('path');
 
 // middleware  
 postRouter.use(authentication)
@@ -22,7 +23,9 @@ postRouter.get('/feed-follow', postCRUD.userFollowFeed)
 // 2. Get recent post globally : Return an array
 postRouter.get('/feed-global', postCRUD.lastestPostFeed)
 // 3. Create a post: /post
-postRouter.post('/', postCRUD.post, tagCRUD.newPost, tagCRUD.getTop10)  
+postRouter.post('/', upload.single('img'), postCRUD.post, tagCRUD.newPost)  
+// postRouter.post('/', upload.single('img'), postCRUD.post, tagCRUD.newPost, tagCRUD.getTop10)  
+
 // 8. Get top creators
 postRouter.get('/topcreator', postCRUD.topCreator)
 // 9. User like/unlike a post

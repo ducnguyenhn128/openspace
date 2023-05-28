@@ -50,7 +50,8 @@ const tagCRUD = {
     // 1. Update to tag collection in DB when user posts a new post
     newPost: async function(req, res, next) {
         try {
-            const {tagList} = req.body;
+            const tagList = req.tagArray;
+            console.log(tagList)
             await Promise.all(
                 tagList.map( async(tag) => {
                     // check tag is still in the DB or not
@@ -84,7 +85,7 @@ const tagCRUD = {
                 return el.tag
             })
 
-            console.log(topTag)
+            // console.log(topTag)
             res.json(topTag)
         } catch(err) {
             console.log(err)

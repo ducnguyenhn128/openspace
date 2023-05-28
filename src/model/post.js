@@ -11,13 +11,15 @@
 // 9. User like post
 // 10. Get user's recent post
 require('dotenv').config();
+const mongoose = require('mongoose');
+const userModel = require('./user');
+const cloudinary = require('cloudinary').v2
+const processHashtag = require('../utils/processHashtag')
+
+
 
 const URL = process.env.MONGODB_URL
-
 const { findUserById, getUserAvatar } = require('./user');
-
-const mongoose = require('mongoose');
-const userModel = require('./user')
 mongoose.connect(URL)
 // Choose Database
 const db = mongoose.connection.useDb('openspace');
@@ -67,6 +69,17 @@ const postSchema = {
 // Define model
 const postModel = db.model('posts', postSchema)
 
+
+// =======================================================
+// =======================================================
+// Cloudianary
+const cloud_api_secret = process.env.CLOUDIANARY_API_SECRET;
+cloudinary.config({ 
+    cloud_name: 'dc5rnju9w', 
+    api_key: '443777163226163', 
+    api_secret: cloud_api_secret 
+});
+
 // Utility function
 // getAuthor from the post id
 const getAuthor = async (post) => {
@@ -82,7 +95,7 @@ const postCRUD = {
         const userID = req.user.userID;
         const user = await findUserById(userID);
         const userFollowing = user.follow.following;
-        console.log(userFollowing)
+        // console.log(userFollowing)
         // 2.  Get last 10 posts from user's following
 
         const pageSize = 10; // Number of items per page
@@ -94,7 +107,7 @@ const postCRUD = {
             .skip(skip)
             .limit(limit)
             .lean()
-        console.log(posts)
+        // console.log(posts)
         // 3: Handle array: add author name from the array (to display in FE)
         // 4: Handle array: add client Like Status from the array (to display in FE)
         // 5: add author avatar
@@ -103,7 +116,7 @@ const postCRUD = {
                 const authorname = await getAuthor(post);
                 post['authorname'] = authorname;
                 const checkUserLikePost = post.favorited.includes(userID)
-                console.log(checkUserLikePost)
+                // console.log(checkUserLikePost)
                 post['userLikeStatus'] = checkUserLikePost      //add client Like Status
                 post['author_avatar'] = await getUserAvatar(post.author)
             })
@@ -131,7 +144,7 @@ const postCRUD = {
             .skip(skip)
             .limit(limit)
             .lean()
-        console.log(posts)
+        // console.log(posts)
         // 3: Handle array: add author name from the array (to display in FE)
         // 4: Handle array: add client Like Status from the array (to display in FE) - check 'clientID' in the favorite array
         // 5: add author avatar
@@ -140,12 +153,12 @@ const postCRUD = {
                 const authorname = await getAuthor(post);
                 post['authorname'] = authorname   //add author name
                 const checkUserLikePost = post.favorited.includes(userID)   // check like status
-                console.log(checkUserLikePost)
+                // console.log(checkUserLikePost)
                 post['userLikeStatus'] = checkUserLikePost      //add client Like Status
                 post['author_avatar'] = await getUserAvatar(post.author)
             })
         )
-        console.log(posts)
+        // console.log(posts)
 
         res.status(200).json(posts)
     },
@@ -153,10 +166,32 @@ const postCRUD = {
     // 3. Create a post: /post
     post : async function (req, res, next) {
         console.log(`Receive a new post`)
-        const {title, body, tagList, createdAt } = req.body;
+        console.log(req.body)
+        const {tagList} = req.body;
+        const tagArray = processHashtag(tagList)
+        req.tagArray = tagArray  // for continue at the next function handle tag
+        const file = req.file
+        let imgLink;
+        if (!file) {
+            imgLink = ''
+        }
+        if (file) {
+            const filepath = file.path
+            // upload file to Cloudianary
+            await cloudinary.uploader.upload(filepath, async function(error, result) {
+                if (error) {
+                  console.log(error);
+                  return res.status(500).send('Error uploading image');
+                }
+                imgLink = await result.url;
+                console.log(imgLink)
+            })
+        }
         try {
             const newPost = new postModel({
                 ...req.body,
+                tagList: tagArray,
+                image: imgLink,
                 author: req.user.userID,
                 updatedAt: '',
                 favorited: [],
@@ -189,7 +224,7 @@ const postCRUD = {
             result.userLikeStatus = foundPost.favorited.includes(userID)  // check whether or not the array contain all people liked post includes uesrID ?
             // author avatar
             result.author_avatar = await getUserAvatar(author)
-            console.log(result)
+            // console.log(result)
             res.status(200).json(result)
         } catch(err) {
             console.log(err);
@@ -206,7 +241,7 @@ const postCRUD = {
         const userID = req.user.userID; // query client
         try {
             const tag = req.params.tag;
-            console.log(tag)
+            // console.log(tag)
             const posts = await postModel
                 .find({ tagList: { $in : [tag] }  })
                 .sort({ createdAt: -1 })
@@ -218,7 +253,7 @@ const postCRUD = {
                     const authorname = await getAuthor(post);
                     post['authorname'] = authorname
                     const checkUserLikePost = post.favorited.includes(userID)   // check like status
-                    console.log(checkUserLikePost)
+                    // console.log(checkUserLikePost)
                     post['userLikeStatus'] = checkUserLikePost      //add client Like Status
                     post['author_avatar'] = await getUserAvatar(post.author)
                 })
@@ -320,12 +355,12 @@ const postCRUD = {
                     const authorname = await getAuthor(post);
                     post['authorname'] = authorname
                     const checkUserLikePost = post.favorited.includes(userID)   // check like status
-                    console.log(checkUserLikePost)
+                    // console.log(checkUserLikePost)
                     post['userLikeStatus'] = checkUserLikePost      //add client Like Status
                     post['author_avatar'] = await getUserAvatar(post.author)
                 })
             )
-            console.log(recentPost)
+            // console.log(recentPost)
             res.status(200).send(recentPost)
         } catch(err) {
             console.log(err)

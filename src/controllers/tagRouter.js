@@ -4,7 +4,7 @@
 const express = require('express')
 const postCRUD = require('../model/post');
 const tagCRUD = require('../model/tag');
-const authentication = require('./middleware');
+const {authentication} = require('./middleware');
 
 const tagRouter = express.Router();
 tagRouter.use(authentication)

@@ -7,7 +7,7 @@
 const express = require('express');
 const morgan = require('morgan')
 morgan('short');
-const authentication = require('./middleware');
+const {authentication} = require('./middleware');
 const profileCRUD = require('../model/profile')
 
 

@@ -200,7 +200,6 @@ const userCRUD = {
                 const response = await userModel.findByIdAndUpdate(userID, { avatar: req.newURL })
                 console.log('New avatar posted successful');
                 res.status(200).send('Update success');
-                // res.redirect('/profile')
             } catch(err) {
                 console.log(err)
                 res.status(500).send('Error updating database');
