@@ -39,7 +39,7 @@ userRouter.post('/logout', (req, res) => {
       });
     res.status(200).send('Logout done');
 })
-
+userRouter.post('/search', userCRUD.search)
 // testing api check login
 userRouter.get('/check-login', authentication, (req, res) => {
     if (req.user) {

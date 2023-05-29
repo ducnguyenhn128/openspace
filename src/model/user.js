@@ -5,9 +5,6 @@ const jwt = require('jsonwebtoken')
 const userProtype = require('./sample');
 require('dotenv').config();
 const cloudinary = require('cloudinary').v2
-// const multer = require('multer');
-// const path = require('path');
-
 
 // ===================================================
 // ===================================================
@@ -16,7 +13,6 @@ const URL = process.env.MONGODB_URL
 mongoose.connect(URL)
 // Choose Database
 const db = mongoose.connection.useDb('openspace');
-
 
 
 // Define Schema
@@ -52,12 +48,12 @@ const userModel = db.model('users', userSchema)
 // =======================================================
 // =======================================================
 // Cloudianary
-const cloud_api_secret = process.env.CLOUDIANARY_API_SECRET;
-cloudinary.config({ 
-    cloud_name: 'dc5rnju9w', 
-    api_key: '443777163226163', 
-    api_secret: cloud_api_secret 
-});
+// const cloud_api_secret = process.env.CLOUDIANARY_API_SECRET;
+// cloudinary.config({ 
+//     cloud_name: 'dc5rnju9w', 
+//     api_key: '443777163226163', 
+//     api_secret: cloud_api_secret 
+// });
 
 const defaultAvatar = 'https://res.cloudinary.com/dc5rnju9w/image/upload/v1685117147/dfavt_g9vebu.webp'
 
@@ -222,6 +218,17 @@ const userCRUD = {
             console.log(err) 
             res.status(500).send();
         }
+    },
+    search: async function(req, res) {
+        const {searchTerm} = req.body;
+        const result = await userModel.find({
+            $or : [
+                {username: { $regex: searchTerm, $options: "i" }},
+                {fullname: { $regex: searchTerm, $options: "i" }}
+            ]
+        })
+
+        res.status(200).send(result)
     }
 }
 
