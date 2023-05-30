@@ -13,10 +13,10 @@ const path = require('path');
 // const {engine} = require('express-handlebars');
 
 // Routers
-const userRouter = require('./src/controllers/userRouter')
-const profileRouter = require('./src/controllers/profileRouter');
-const postRouter = require('./src/controllers/postRouter');
-const tagRouter = require('./src/controllers/tagRouter');
+const userRouter = require('./controllers/userRouter')
+const profileRouter = require('./controllers/profileRouter');
+const postRouter = require('./controllers/postRouter');
+const tagRouter = require('./controllers/tagRouter');
 
 // CORS
 app.use(cors({
