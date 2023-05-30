@@ -10,7 +10,7 @@ const author1 = process.env.AUTHOR
 
 // For handlebars
 const path = require('path');
-const {engine} = require('express-handlebars');
+// const {engine} = require('express-handlebars');
 
 // Routers
 const userRouter = require('./src/controllers/userRouter')
@@ -32,11 +32,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
 // HandleBars Template Engine
-app.engine('hbs', engine({
-    extname: '.hbs'
-}))
-app.set('view engine', 'hbs')
-app.set('views', path.join(__dirname, '/src/views'))
+// app.engine('hbs', engine({
+//     extname: '.hbs'
+// }))
+// app.set('view engine', 'hbs')
+// app.set('views', path.join(__dirname, '/src/views'))
 
 // API End Point
 app.use('/api', userRouter)
