@@ -11,7 +11,7 @@ const cloudinary = require('cloudinary').v2
 // Connect to MongoDB
 const URL = process.env.MONGODB_URL
 mongoose.connect(URL)
-// Choose Database
+// Choose Database 
 const db = mongoose.connection.useDb('openspace');
 
 
@@ -146,7 +146,10 @@ const userCRUD = {
             return;
         }
         // 2. foundUser, compare password
-        const matchedPassword = bcrypt.compare(password, user.password);
+        console.log(password)
+        console.log(user.password)
+        const matchedPassword = await bcrypt.compare(password, user.password);
+        console.log(matchedPassword)
         if (matchedPassword) {  
             // jwt token
             const payload = {
