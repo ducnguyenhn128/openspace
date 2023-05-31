@@ -6,7 +6,6 @@ const app = express();
 const cors = require('cors');
 const multer = require('multer');
 
-const author1 = process.env.AUTHOR
 
 // For handlebars
 const path = require('path');
@@ -20,8 +19,8 @@ const tagRouter = require('./src/controllers/tagRouter');
 
 // CORS
 app.use(cors({
-    origin: 'https://openspaceweb.vercel.app' ,
-    // origin: true ,
+    // origin: 'https://openspaceweb.vercel.app' ,
+    origin: true ,
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
     credentials: true, // Allow credentials (e.g., cookies)

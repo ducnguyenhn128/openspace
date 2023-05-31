@@ -349,6 +349,7 @@ const postCRUD = {
         try {
             const author = req.query.author
             const recentPost = await postModel.find({author: author})
+                .limit(10)
                 .sort({createdAt: -1})
                 .lean()
             // handle array: add author name from the array (to display in FE)
