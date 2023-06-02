@@ -15,7 +15,7 @@ const mongoose = require('mongoose');
 const userModel = require('./user');
 const cloudinary = require('cloudinary').v2
 const processHashtag = require('../utils/processHashtag')
-
+const fs = require('fs')
 
 
 const URL = process.env.MONGODB_URL
@@ -166,9 +166,11 @@ const postCRUD = {
     // 3. Create a post: /post
     post : async function (req, res, next) {
         console.log(`Receive a new post`)
-        console.log(req.body)
+        // console.log(req.body)
         const {tagList} = req.body;
         const tagArray = processHashtag(tagList)
+        const createdAt = req.body.createdAt
+        console.log(createdAt)
         req.tagArray = tagArray  // for continue at the next function handle tag
         const file = req.file
         let imgLink;
@@ -185,11 +187,20 @@ const postCRUD = {
                 }
                 imgLink = await result.url;
                 console.log(imgLink)
+                // delete file after upload
+                fs.unlink(filepath, (err) => {
+                    if(err) {
+                        console.error('Error deleting file:', err);
+                        return;
+                    }
+                    console.log('Image has been deleted successfully.');
+                })
             })
         }
         try {
             const newPost = new postModel({
                 ...req.body,
+                createdAt: new Date(createdAt),
                 tagList: tagArray,
                 image: imgLink,
                 author: req.user.userID,
