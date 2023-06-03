@@ -13,7 +13,7 @@ tagRouter.use(authentication)
 // })
 
 // 1. Get a list of common tag
-tagRouter.get('/%common', tagCRUD.getTop10)
+tagRouter.get('/common', tagCRUD.getTop10)
 // 2. Get all post by a specific tag
 tagRouter.get('/:tag', postCRUD.getPostByTag)
 module.exports = tagRouter
