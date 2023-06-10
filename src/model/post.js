@@ -45,7 +45,7 @@ const postSchema = {
         require: false,
     },
     createdAt : {
-        type: String,
+        type: Date,
         require: true,
     },
     image: {
